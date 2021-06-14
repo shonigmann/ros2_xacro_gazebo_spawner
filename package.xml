@@ -2,16 +2,14 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros2_xacro_gazebo_spawner</name>
-  <version>0.0.1</version>
-  <description>Package for spawning a robot model into Gazebo using Xacro to dynamically build and load the robot description</description>
-  <maintainer email="shonigmann@blueorigin.com">shonigmann</maintainer>
-  <license>Apache-2.0</license>
+  <version>0.0.0</version>
+  <description>A simple package that can dynamically spawn robots defined in xacro into Gazebo from ROS2 launch files</description>
+  <maintainer email="simonhonigmann@gmail.com">Simon Honigmann</maintainer>
+  <license>TODO: License declaration</license>
 
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <test_depend>ament_lint_auto</test_depend>
-  <test_depend>ament_lint_common</test_depend>
   <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
   <test_depend>python3-pytest</test_depend>
 
   <export>
