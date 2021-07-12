@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'ros2_xacro_gazebo_spawner = ros2_xacro_gazebo_spawner.ros2_xacro_gazebo_spawner:main',
         ],
     },
 )
