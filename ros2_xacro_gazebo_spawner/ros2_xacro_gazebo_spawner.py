@@ -71,6 +71,7 @@ def main():
 
     node.get_logger().info(
         'Creating Service client to connect to `/spawn_entity`')
+
     client = node.create_client(SpawnEntity, '/spawn_entity')
 
     node.get_logger().info('Connecting to `/spawn_entity` service...')
