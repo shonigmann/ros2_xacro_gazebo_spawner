@@ -39,23 +39,12 @@ def main():
                         help='the y component of the initial position [meters]')
     parser.add_argument('-z', type=float, default=0,
                         help='the z component of the initial position [meters]')
+    parser.add_argument('-R', type=float, default=0,
+                        help='the initial robot yaw position [radians]')
+    parser.add_argument('-P', type=float, default=0,
+                        help='the initial robot yaw position [radians]')
     parser.add_argument('-Y', type=float, default=0,
                         help='the initial robot yaw position [radians]')
-    parser.add_argument('-J1', type=float, default=0,
-                        help='the initial manipulator joint-1 position [radians]')
-    parser.add_argument('-J2', type=float, default=0,
-                        help='the initial manipulator joint-2 position [radians]')
-    parser.add_argument('-J3', type=float, default=0,
-                        help='the initial manipulator joint-3 position [radians]')
-    parser.add_argument('-J4', type=float, default=0,
-                        help='the initial manipulator joint-4 position [radians]')
-    parser.add_argument('-G', type=float, default=0,
-                        help='the initial gripper position [radians]')
-    parser.add_argument('-Gs', type=float, default=0,
-                        help='the initial sub-gripper position [radians]')
-    parser.add_argument('-p', type=str, default='',
-                        help='full path location of the desired yaml config file for the robot\'s PID joint '
-                             'controllers')  # TODO: do something with this...
     parser.add_argument('-k', '--timeout', type=float, default=10.0,
                         help="Seconds to wait. Block until the future is complete if negative. Don't wait if 0.")
     parser.add_argument('-u', '--urdf', type=str,
@@ -78,9 +67,8 @@ def main():
         client.wait_for_service()
         node.get_logger().info('...connected!')
 
-    node.get_logger().info('spawning `{}` on namespace `{}` at {}, {}, {}, {}, {}, {}, {}, {}, {}, {}'.format(
-        args.robot_name, args.robot_namespace, args.x, args.y, args.z, args.Y, args.J1, args.J2, args.J3, args.J4,
-        args.G, args.Gs))
+    node.get_logger().info('spawning `{}` on namespace `{}` at {}, {}, {}, {}, {}, {}'.format(
+        args.robot_name, args.robot_namespace, args.x, args.y, args.z, args.R, args.P, args.Y))
 
     description_path = args.urdf
 
@@ -100,11 +88,11 @@ def main():
     root = ET.fromstring(xml_string)
 
     for plugin in root.iter('plugin'):
-        # TODO: figure out how to generalize this to all robots that would need it
+        # TODO - figure out how to generalize this to all robots that would need it
         if 'diff_drive' in plugin.attrib.values():  # or 'gazebo_ros_control' in plugin.attrib.values():
             # The only plugin we care for now is 'diff_drive' which is
             # broadcasting a transform between`odom` and `base_footprint`
-            # TODO: VERIFY WHEN USING NAMESPACES! WITHOUT NAMESPACE, THIS SEEMS TO BREAK THE PLUGIN
+            # TODO - VERIFY WHEN USING NAMESPACES! WITHOUT NAMESPACE, THIS SEEMS TO BREAK THE PLUGIN
             if args.robot_namespace is not None and args.robot_namespace != '':
                 ros_params = plugin.find('ros')
                 ros_tf_remap = ET.SubElement(ros_params, 'remapping')
@@ -122,8 +110,8 @@ def main():
     request.initial_pose.position.z = float(args.z)
 
     # CONVERT DESIRED YAW TO QUATERNION FOR INITIAL POSE:
-    eul_r = 0.0
-    eul_p = 0.0
+    eul_r = args.R
+    eul_p = args.P
     eul_y = args.Y
 
     rot = Rotation.from_euler('xyz', [eul_r, eul_p, eul_y], degrees=False)

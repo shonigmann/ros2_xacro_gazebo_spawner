@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>A simple package that can dynamically spawn robots defined in xacro into Gazebo from ROS2 launch files</description>
   <maintainer email="simonhonigmann@gmail.com">Simon Honigmann</maintainer>
-  <license>TODO: License declaration</license>
+  <license>TODO - License declaration</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
